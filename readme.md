@@ -1,4 +1,4 @@
-hell
+hasdasdell
 # branch sync sample 2
 
 This repository demonstrates a GitHub Actions flow that versions `master` and syncs it to `develop` after a merged PR from `hotfix/*` or `release/*`.
