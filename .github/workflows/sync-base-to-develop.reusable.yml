@@ -1,0 +1,57 @@
+name: Sync base branch to develop
+
+on:
+  workflow_call:
+    inputs:
+      base_branch:
+        description: Branch to merge from
+        required: true
+        type: string
+      target_branch:
+        description: Branch to merge into
+        required: false
+        default: develop
+        type: string
+      git_user_name:
+        description: Git author name for merge commits
+        required: false
+        default: branch-sync-bot
+        type: string
+      git_user_email:
+        description: Git author email for merge commits
+        required: false
+        default: branch-sync-bot@users.noreply.github.com
+        type: string
+    secrets:
+      token:
+        required: true
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout target branch
+        uses: actions/checkout@v5
+        with:
+          token: ${{ secrets.token }}
+          ref: ${{ inputs.target_branch }}
+          fetch-depth: 0
+
+      - name: Configure git identity
+        run: |
+          git config user.name "${{ inputs.git_user_name }}"
+          git config user.email "${{ inputs.git_user_email }}"
+
+      - name: Fetch branches
+        run: |
+          git fetch origin "${{ inputs.base_branch }}" "${{ inputs.target_branch }}"
+
+      - name: Merge base into target
+        run: |
+          git checkout -B "${{ inputs.target_branch }}" "origin/${{ inputs.target_branch }}"
+          git merge --no-edit "origin/${{ inputs.base_branch }}"
+
+      - name: Push target branch
+        run: |
+          git push origin "HEAD:${{ inputs.target_branch }}"
