@@ -4,8 +4,7 @@ This repository demonstrates a GitHub Actions flow that versions `master` and sy
 
 ## Workflows
 
-- `.github/workflows/release-version-and-sync-develop.yml`: runs on merged PRs to `master`, bumps version, pushes `master`, then syncs to `develop`.
-- `.github/workflows/sync-base-to-develop.reusable.yml`: reusable merge/push workflow for syncing branches.
+- `.github/workflows/release-version-and-sync-develop.yml`: runs on merged PRs to `master`, bumps version, pushes `master`, then syncs to `develop` using the shared reusable workflow from `branch_sync_sample`.
 
 ## Release rules
 
@@ -30,3 +29,4 @@ This repository demonstrates a GitHub Actions flow that versions `master` and sy
 
 - `standard-version` is invoked with `npx --yes`, so no local install step is required for this demo.
 - The workflow uses `actions/create-github-app-token@v2` and `actions/checkout@v5`.
+- The sync step uses the shared reusable workflow at `sdfsdflk123/branch_sync_sample/.github/workflows/sync-base-to-develop.reusable.yml@develop`.
